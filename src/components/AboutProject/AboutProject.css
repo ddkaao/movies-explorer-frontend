@@ -1,0 +1,180 @@
+.aboutProject__content {
+    max-width: 1140px;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto 110px;
+}
+
+.aboutProject__title {
+    max-width: 1140px;
+    color: rgb(255, 255, 255);
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 27px;
+    text-align: left;
+    border-bottom: 1px solid rgb(218, 218, 218);
+    padding-bottom: 23px;
+    margin: 0 0 70px 0;
+}
+
+.aboutProject__container {
+    max-width: 1140px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0 0 110px 0;
+}
+
+.aboutProject__information {
+    max-width: 550px;
+    display: flex;
+    flex-direction: column;
+}
+
+.aboutProject__subtitle {
+    color: rgb(255, 255, 255);
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+    margin: 0 0 26px 0;
+}
+
+.aboutProject__text {
+    color: rgb(255, 255, 255);
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: left;
+    margin: 0;
+}
+
+.aboutProject__timing {
+    max-width: 1140px;
+    display: flex;
+}
+
+.aboutProject__backend {
+    width: 20%;
+}
+
+.aboutProject__frontend {
+    width: 80%;
+}
+
+.aboutProject__deadline {
+    height: 27px;
+    color: rgb(0, 0, 0);
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+    text-align: center;
+    background: rgb(61, 220, 132);
+    margin: 0 0 14px 0;
+    padding-top: 9px;
+}
+
+.aboutProject__deadline_dark {
+    color: rgb(255, 255, 255);
+    background: rgb(48, 48, 48);
+}
+
+.aboutProject__caption {
+    max-width: 200px;
+    color: rgb(139, 139, 139);
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 17px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+@media screen and (max-width: 1100px) {
+    
+    .aboutProject__content {
+        max-width: 668px;
+        margin-bottom: 90px;
+    }
+
+    .aboutProject__container {
+        margin-bottom: 93px;
+    }
+
+    .aboutProject__information {
+        max-width: 319px;
+    }
+
+    .aboutProject__text {
+        font-size: 12px;
+        line-height: 18px;
+    }
+}
+
+@media screen and (max-width: 821px) {
+    
+    .aboutProject__content {
+        max-width: 284px;
+        margin-bottom: 70px;
+    }
+
+    .aboutProject__title {
+        max-width: 284px;
+        font-size: 18px;
+        line-height: 22px;
+        padding-bottom: 28px;
+        margin-bottom: 60px;
+    }
+
+    .aboutProject__container {
+        max-width: 284px;
+        gap: 56px;
+        margin-bottom: 60px;
+    }
+
+    .aboutProject__information {
+        max-width: 284px;
+    }
+
+    .aboutProject__subtitle {
+        font-size: 18px;
+        line-height: 22px;
+        margin-bottom: 16px;
+    }
+
+    .aboutProject__text {
+        font-size: 11px;
+        line-height: 16px;
+    }
+
+    .aboutProject__timing {
+        max-width: 284px;
+    }
+
+    .aboutProject__deadline {
+        height: 24px;
+        font-size: 11px;
+        line-height: 13px;
+        margin-bottom: 10px;
+        padding-top: 11px;
+    }
+
+    .aboutProject__caption {
+        max-width: 80px;
+        font-size: 11px;
+        line-height: 13px;
+    }
+
+    .aboutProject__backend {
+        width: 35%;
+    }
+    
+    .aboutProject__frontend {
+        width: 65%;
+    }
+}
