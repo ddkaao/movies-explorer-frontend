@@ -1,6 +1,6 @@
 .portfolio__container {
     max-width: 1140px;
-    margin: 0 auto;
+    margin: 0 70px;
 }
 
 .portfolio__title {
@@ -65,6 +65,7 @@
 
     .portfolio__container {
         max-width: 668px;
+        margin: 0 auto;
     }
 
     .portfolio__name {

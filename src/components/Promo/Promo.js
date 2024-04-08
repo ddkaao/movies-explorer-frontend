@@ -3,7 +3,7 @@ import './Promo.css';
 
 export default function Promo() {
     return (
-        <div className="promo">
+        <section className="promo">
             <div className="promo__container">
                 <h1 className="promo__title">Учебный проект студента факультета Веб-разработки.</h1>
                 <div className="promo__navTab">
@@ -12,6 +12,6 @@ export default function Promo() {
                     <a href="#student" className="promo__link">Студент</a>
                 </div>
             </div>
-        </div>
+        </section>
     )
 }

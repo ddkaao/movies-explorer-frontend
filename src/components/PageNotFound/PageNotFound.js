@@ -4,7 +4,7 @@ import './PageNotFound.css';
 
 export default function PageNotFound() {
     return (
-        <div className="pageNotFound">
+        <section className="pageNotFound">
             <div className="pageNotFound__container">
                 <div className="pageNotFound__content">
                     <h2 className="pageNotFound__title">404</h2>
@@ -12,6 +12,6 @@ export default function PageNotFound() {
                 </div>
                 <Link className="pageNotFound__link" to={-1}>Назад</Link>
             </div>
-        </div>
+        </section>
     )
 }

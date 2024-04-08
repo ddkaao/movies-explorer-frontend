@@ -2,8 +2,8 @@ import './MenuButton.css';
 
 export default function MenuButton({ onClick }) {
     return (
-       <div className="menuButton">
-            <button type="button" className="menuButton_btn" onClick={onClick}></button>
-       </div>
+       <section className="menuButton">
+            <button type="button" className="menuButton__btn" onClick={onClick}></button>
+       </section>
     )
 }

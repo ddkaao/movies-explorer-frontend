@@ -6,7 +6,7 @@
     flex-grow: 1;
 }
 
-.menuButton_btn {
+.menuButton__btn {
     width: 28px;
     height: 28px;
     background-image: url("../../images/menuBtn.svg");
@@ -17,7 +17,7 @@
     background-color: transparent;
 }
 
-.menuButton_btn:hover {
+.menuButton__btn:hover {
     opacity: .7;
 }
 

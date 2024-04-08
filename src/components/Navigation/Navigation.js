@@ -17,7 +17,7 @@ export default function Navigation() {
     }
 
     return (
-        <div className="navigation">
+        <section className="navigation">
             <div className="navigation__links">
                 <Link className="navigation__link" to="/movies">Фильмы</Link>
                 <Link className="navigation__link" to="/saved-movies">Сохранённые фильмы</Link>
@@ -28,6 +28,6 @@ export default function Navigation() {
 
             <MenuButton onClick={handleClickOnMenuBtn} />
             <SlideMenu isOpen={isSlideMenuOpened} onClose={closeSlideMenu} />
-        </div>
+        </section>
     )
 }

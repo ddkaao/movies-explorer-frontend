@@ -44,7 +44,7 @@
     opacity: .8;
 }
 
-.moviesCard__btn_save {
+.moviesCard__btn-save {
     width: 72px;
     height: 21px;
     background-image: url("../../images/save.svg");
@@ -52,7 +52,7 @@
     background-color: transparent;
 }
 
-.moviesCard__btn_saved {
+.moviesCard__btn-saved {
     width: 21px;
     height: 21px;
     background-image: url("../../images/saved.svg");
@@ -60,7 +60,7 @@
     background-color: transparent;
 }
 
-.moviesCard__btn_delete {
+.moviesCard__btn-delete {
     width: 21px;
     height: 21px;
     background-image: url("../../images/trash.svg");

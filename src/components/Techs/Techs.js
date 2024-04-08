@@ -3,7 +3,7 @@ import './Techs.css';
 
 export default function Techs() {
     return (
-        <div className="techs" id="techs">
+        <section className="techs" id="techs">
             <div className="techs__content">
             <h2 className="techs__title">Технологии</h2>
             <div className="techs__container">
@@ -20,6 +20,6 @@ export default function Techs() {
                 </div>
             </div>
             </div>
-        </div>
+        </section>
     )
 }

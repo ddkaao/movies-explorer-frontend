@@ -13,7 +13,7 @@ export default function MoviesCard() {
     }
 
     return (
-        <div className="moviesCard">
+        <section className="moviesCard">
             <div className="moviesCard__container">
                 <div className="moviesCard__content">
                     <a className="moviesCard__link" href="/">
@@ -27,10 +27,10 @@ export default function MoviesCard() {
                 </div>
             </div>
             {pathname === '/saved-movies' ? (
-                <button type="button" className="moviesCard__btn moviesCard__btn_delete"></button>
+                <button type="button" className="moviesCard__btn moviesCard__btn-delete"></button>
             ) : (
-                <button type="button" className={`moviesCard__btn ${saved ? "moviesCard__btn_saved" : "moviesCard__btn_save"}`} onClick={handleSaved}></button>
+                <button type="button" className={`moviesCard__btn ${saved ? "moviesCard__btn-saved" : "moviesCard__btn-save"}`} onClick={handleSaved}></button>
             )}
-        </div>
+        </section>
     )
 }

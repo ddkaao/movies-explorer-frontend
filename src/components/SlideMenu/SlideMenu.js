@@ -5,7 +5,7 @@ import './SlideMenu.css';
 
 export default function SlideMenu({ isOpen, onClose }) {
     return (
-        <div className={`slideMenu ${isOpen ? 'slideMenu-opened' : ''}`}>
+        <section className={`slideMenu ${isOpen ? 'slideMenu-opened' : ''}`}>
             <div className="slideMenu__container">
                 <div className="slideMenu__links">
                     <Link className="slideMenu__link" to="/">Главная</Link>
@@ -17,8 +17,8 @@ export default function SlideMenu({ isOpen, onClose }) {
                 </Link>
             </div>
             <button type="button" className="slideMenu__close" onClick={onClose}>
-                    <img src={cross}  alt="Закрыть" className="slideMenu__close-icon"/>
+                    <img src={cross}  alt="Закрыть" className="slideMenu__close-icon" />
             </button>
-        </div>
+        </section>
     )
 }

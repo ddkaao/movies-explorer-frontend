@@ -6,6 +6,8 @@
 .techs__content {
     max-width: 1140px;
     margin: 0 auto;
+    padding-left: 70px;
+    padding-right: 70px;
 }
 
 .techs__title {
