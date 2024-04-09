@@ -83,6 +83,8 @@
     
     .techs__content {
         max-width: 668px;
+        padding-left: 50px;
+        padding-right: 50px;
     }
 
     .techs__title {
@@ -114,7 +116,7 @@
     }
 }
 
-@media screen and (max-width: 821px) {
+@media screen and (max-width: 767px) {
 
     .techs {
         margin-bottom: 70px;
@@ -122,6 +124,8 @@
     
     .techs__content {
         max-width: 284px;
+        padding-left: 18px;
+        padding-right: 18px;
     }
 
     .techs__title {

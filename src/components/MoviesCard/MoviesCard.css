@@ -2,6 +2,10 @@
     position: relative;
 }
 
+.moviesCard__content {
+    height: 201px;
+}
+
 .moviesCard__caption {
     display: flex;
     justify-content: space-between;
@@ -70,22 +74,35 @@
 
 @media screen and (max-width: 1100px) {
 
+    .moviesCard__content {
+        height: 190px;
+    }    
+
     .moviesCard__image {
         width: 339px;
         height: 190px;
     }
 
     .moviesCard__caption {
+        padding-top: 25px;
         padding-left: 0;
         padding-right: 0;
     }
 }
 
 
-@media screen and (max-width: 821px) {
+@media screen and (max-width: 767px) {
+
+    .moviesCard__content {
+        height: 168px;
+    }    
 
     .moviesCard__image {
         width: 300px;
         height: 168px;
+    }
+
+    .moviesCard__caption {
+        padding-top: 16px;
     }
 }

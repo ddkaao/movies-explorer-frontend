@@ -65,11 +65,12 @@
 }
 
 
-@media screen and (max-width: 821px) {
+@media screen and (max-width: 767px) {
 
     .search__container {
         max-width: 292px;
         padding-left: 14px;
         padding-right: 14px;
     }
+
 }

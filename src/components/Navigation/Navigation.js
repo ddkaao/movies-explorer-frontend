@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import account from "../../images/account.svg";
 import SlideMenu from "../SlideMenu/SlideMenu";
 import MenuButton from "../MenuButton/MenuButton";
 import './Navigation.css'; 
@@ -23,7 +24,7 @@ export default function Navigation() {
                 <Link className="navigation__link" to="/saved-movies">Сохранённые фильмы</Link>
             </div>
             <Link className="navigation__account" to="/profile">
-                <button type="button" className="navigation__button">Аккаунт</button>
+                <img src={account} className="navigation__button" alt="Аккаунт" />
             </Link>
 
             <MenuButton onClick={handleClickOnMenuBtn} />

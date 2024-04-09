@@ -101,10 +101,15 @@
     .aboutProject__content {
         max-width: 668px;
         margin-bottom: 90px;
+        padding: 0 50px;
     }
 
     .aboutProject__container {
         margin-bottom: 93px;
+    }
+
+    .aboutProject__subtitle {
+        margin-bottom: 22px;
     }
 
     .aboutProject__information {
@@ -117,11 +122,12 @@
     }
 }
 
-@media screen and (max-width: 821px) {
+@media screen and (max-width: 767px) {
     
     .aboutProject__content {
         max-width: 284px;
-        margin-bottom: 70px;
+        padding: 0 18px;
+        margin-bottom: 69px;
     }
 
     .aboutProject__title {

@@ -83,7 +83,7 @@
     
 }
 
-@media screen and (max-width: 821px) {
+@media screen and (max-width: 767px) {
 
     .portfolio__container {
         max-width: 292px;
