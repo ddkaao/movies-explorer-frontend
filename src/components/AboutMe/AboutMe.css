@@ -61,9 +61,10 @@
 }
 
 .aboutMe__image {
-    max-width: 270px;
-    max-height: 327px;
+    width: 270px;
+    height: 327px;
     border-radius: 10px;
+    object-fit: cover;
 }
 
 .aboutMe__github {
@@ -84,8 +85,7 @@
 @media screen and (max-width: 1100px) {
 
     .aboutMe__content {
-        max-width: 668px;
-        margin: 0 auto 90px;
+        margin: 0 50px 90px 50px;
     }
 
     .aboutMe__name {
@@ -101,15 +101,14 @@
     }
 
     .aboutMe__description {
-        max-width: 364px;
         margin-bottom: 87px;
         font-size: 12px;
         line-height: 18px;
     }
 
     .aboutMe__image {
-        max-width: 255px;
-        max-height: 307px;
+        width: 255px;
+        height: 307px;
     }
     
 }
@@ -117,8 +116,7 @@
 @media screen and (max-width: 767px) {
 
     .aboutMe__content {
-        max-width: 292px;
-        margin-bottom: 70px;
+        margin: 0 14px 70px 14px;
     }
 
     .aboutMe__title {
@@ -149,7 +147,6 @@
     }
 
     .aboutMe__description {
-        max-width: 292px;
         margin-bottom: 40px;
         font-size: 11px;
         line-height: 16px;
@@ -158,8 +155,8 @@
     .aboutMe__image {
         align-self: center;
         order: 1;
-        max-width: 292px;
-        min-height: 352px;
+        width: 292px;
+        height: 352px;
     }
     
 }

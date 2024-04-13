@@ -64,8 +64,7 @@
 @media screen and (max-width: 1100px) {
 
     .portfolio__container {
-        max-width: 668px;
-        margin: 0 auto;
+        margin: 0 50px;
     }
 
     .portfolio__name {
@@ -86,7 +85,7 @@
 @media screen and (max-width: 767px) {
 
     .portfolio__container {
-        max-width: 292px;
+        margin: 0 14px;
     }
 
     .portfolio__title {

@@ -58,7 +58,6 @@
 @media screen and (max-width: 1100px) {
 
     .search__container {
-        max-width: 708px;
         padding-left: 30px;
         padding-right: 30px;
     }
@@ -68,7 +67,6 @@
 @media screen and (max-width: 767px) {
 
     .search__container {
-        max-width: 292px;
         padding-left: 14px;
         padding-right: 14px;
     }

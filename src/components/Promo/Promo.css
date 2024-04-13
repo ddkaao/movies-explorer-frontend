@@ -50,8 +50,7 @@
 @media screen and (max-width: 1100px) {
     
     .promo__container {
-        max-width: 728px;
-        margin: 20px auto 90px;
+        margin: 20px 20px 90px 20px;
     }
 
     .promo__title {
@@ -65,8 +64,7 @@
 @media screen and (max-width: 767px) {
     
     .promo__container {
-        max-width: 292px;
-        margin: 14px auto 70px;
+        margin: 14px 14px 70px 14px;
     }
 
     .promo__title {
