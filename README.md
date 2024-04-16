@@ -2,6 +2,11 @@
 
 dark-2
 
+# Ссылки
+
+frontend: https://ddkaao.movies.nomoredomainswork.ru/
+backend: https://api.ddkaao.movies.nomoredomainswork.ru/
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
