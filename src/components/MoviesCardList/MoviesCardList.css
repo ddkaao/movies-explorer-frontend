@@ -15,7 +15,12 @@
 }
 
 .moviesCardList__error {
-    display: none;
+    color: #8B8B8B;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 22px;
+    text-align: center;
+    margin: 0;
 }
 
 .moviesCardList__btns {

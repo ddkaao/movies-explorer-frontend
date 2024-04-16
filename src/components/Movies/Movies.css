@@ -1,0 +1,11 @@
+.movies__error {
+    display: block;
+    height: 20px;
+    color: rgb(238, 52, 101);
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+    text-align: center;
+    margin-top: 30px;
+}

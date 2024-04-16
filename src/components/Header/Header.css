@@ -13,8 +13,8 @@
 
 .header__menu {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 30px;
 }
 
 .header__link {
@@ -27,7 +27,6 @@
     font-weight: 500;
     line-height: 16px;
     text-align: center;
-    padding-top: 8px;
 }
 
 .header__link-green {
@@ -36,6 +35,7 @@
     color: rgb(0, 0, 0);
     border-radius: 3px;
     background: rgb(61, 220, 132);
+    padding-top: 8px;
 }
 
 .header__link:hover {
@@ -54,6 +54,20 @@
 
     .header__container {
         padding: 18px 14px;
+    }
+
+    .header__menu {
+        gap: 14px;
+    }
+
+    .header__link {
+        font-size: 10px;
+    }
+    
+    .header__link-green {
+        width: 54px;
+        height: 21px;
+        padding-top: 5px;
     }
     
 }
