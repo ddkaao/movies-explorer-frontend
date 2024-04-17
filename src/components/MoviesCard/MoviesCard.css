@@ -1,0 +1,108 @@
+.moviesCard {
+    position: relative;
+}
+
+.moviesCard__content {
+    height: 201px;
+}
+
+.moviesCard__caption {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 14px 0 14px;
+}
+
+.moviesCard__title {
+    color: rgb(255, 255, 255);
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+    margin: 0;
+}
+
+.moviesCard__duration {
+    width: 52px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    background: rgb(47, 47, 47);
+    color: rgb(139, 139, 139);
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 10px;
+    margin: 0;
+}
+
+.moviesCard__btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    cursor: pointer;
+}
+
+.moviesCard__btn:hover {
+    opacity: .8;
+}
+
+.moviesCard__btn-save {
+    width: 72px;
+    height: 21px;
+    background-image: url("../../images/save.svg");
+    border: none;
+    background-color: transparent;
+}
+
+.moviesCard__btn-saved {
+    width: 21px;
+    height: 21px;
+    background-image: url("../../images/saved.svg");
+    border: none;
+    background-color: transparent;
+}
+
+.moviesCard__btn-delete {
+    width: 21px;
+    height: 21px;
+    background-image: url("../../images/trash.svg");
+    border: none;
+    background-color: transparent;
+}
+
+@media screen and (max-width: 1100px) {
+
+    .moviesCard__content {
+        height: 190px;
+    }    
+
+    .moviesCard__image {
+        width: 339px;
+        height: 190px;
+    }
+
+    .moviesCard__caption {
+        padding-top: 25px;
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+
+@media screen and (max-width: 767px) {
+
+    .moviesCard__content {
+        height: 168px;
+    }    
+
+    .moviesCard__image {
+        width: 300px;
+        height: 168px;
+    }
+
+    .moviesCard__caption {
+        padding-top: 16px;
+    }
+}

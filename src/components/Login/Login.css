@@ -1,0 +1,153 @@
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login__container {
+    width: 100%;
+    padding-top: 70px;
+    padding-bottom: 70px;
+}
+
+.login__form {
+    max-width: 396px;
+    margin: 0 auto;
+}
+
+.login__logo {
+    width: 38px;
+    height: 38px;
+    margin-bottom: 40px;
+}
+
+.login__title {
+    color: rgb(255, 255, 255);
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 29px;
+    margin: 0 0 40px 0;
+}
+
+.login__inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: 0;
+    padding: 0;
+}
+
+.login__label {
+    color: rgb(139, 139, 139);
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 12px;
+    margin: 0 0 10px 0;
+}
+
+.login__input {
+    width: 366px;
+    border-radius: 8px;
+    background: rgb(47, 47, 47);
+    color: rgb(255, 255, 255);
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 16px;
+    outline: none;
+    border: 0;
+    padding: 15px;
+}
+
+.login__input:focus {
+    outline: 1px solid rgb(139, 139, 139);;
+}
+
+.login__btn {
+    width: 100%;
+    height: 45px;
+    color: rgb(255, 255, 255);
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 17px;
+    border-radius: 3px;
+    background: rgb(66, 133, 244);
+    border: 0;
+    margin-top: 180px;
+    margin-bottom: 16px;
+}
+
+.login__btn:hover {
+    opacity: 0.8;
+}
+
+.login__caption {
+    color: rgb(139, 139, 139);
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.login__link {
+    color: rgb(66, 133, 244);
+    text-decoration: none;
+}
+
+.login__link:hover {
+    opacity: 0.8;
+}
+
+@media screen and (max-width: 1100px) {
+
+    .login__container {
+        padding-top: 230px;
+        padding-bottom: 230px;
+    }
+    
+}
+
+@media screen and (max-width: 767px) {
+
+    .login__container {
+        padding-top: 56px;
+        padding-bottom: 30px;
+    }
+
+    .login__form {
+        max-width: 260px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .login__logo {
+        margin-bottom: 50px;
+    }
+
+    .login__title {
+        margin-bottom: 80px;
+    }
+
+    .login__input {
+        width: 230px;
+    }
+
+    .login__btn {
+        font-size: 12px;
+        line-height: 15px;
+        margin-top: 267px;
+        margin-bottom: 14px;
+    }
+
+    .login__caption {
+        font-size: 12px;
+        line-height: 15px;
+    }
+    
+}

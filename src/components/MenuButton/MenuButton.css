@@ -1,0 +1,31 @@
+.menuButton {
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.menuButton__btn {
+    width: 28px;
+    height: 28px;
+    background-image: url("../../images/menuBtn.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+}
+
+.menuButton__btn:hover {
+    opacity: .7;
+}
+
+@media screen and (min-width: 1100px) {
+    
+    .menuButton {
+        display: none;
+    }
+
+}
+
