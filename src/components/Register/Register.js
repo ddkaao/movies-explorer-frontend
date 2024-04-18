@@ -63,7 +63,9 @@ export default function Register({ isLoading, onRegister, onRegisterErr }) {
         <section className="register">
             <div className="register__container">
                 <form className="register__form" onSubmit={handleSubmit} ref={formR} noValidate>
-                    <img src={logo} alt="Логотип" className="register__logo" />
+                    <Link to="/">
+                        <img src={logo} alt="Логотип" className="register__logo" />
+                    </Link>
                     <h2 className="register__title">Добро пожаловать!</h2>
                     <fieldset className="register__inputs">
                         <div className="register__field">

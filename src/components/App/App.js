@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Routes, useNavigate } from "react-router-dom"; 
 import './App.css'; 
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import ProtectedRouteSign from '../ProtectedRouteSign/ProtectedRouteSign';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import mainApi from '../../utils/MainApi';
 import Preloader from '../Preloader/Preloader';
@@ -19,7 +20,7 @@ function App() {
     name: "",
     email: "",
   });
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(JSON.parse(localStorage.getItem('loggedIn')));
   const [isLoading, setIsLoading] = React.useState(false);
   const [onRegisterErr, setOnRegisterErr] = React.useState('');
   const [onLoginErr, setOnLoginErr] = React.useState('');
@@ -35,6 +36,7 @@ function App() {
         .catch((err) => {
           console.log(err); 
         });
+        setOnUpdateUserErr("");
     }
 }, [loggedIn]);
 
@@ -44,6 +46,7 @@ function App() {
       mainApi.getToken(jwt)
         .then((res) => {
             setLoggedIn(true);
+            localStorage.setItem('loggedIn', true);
             setCurrentUser(res);
         })
         .catch((err) => {
@@ -51,12 +54,6 @@ function App() {
         });
     }
   }, []);
-
-  React.useEffect(() => {
-    if (loggedIn) {
-        navigate("/movies");
-    }
-  }, [loggedIn]);
 
   function onRegister(name, email, password) {
     setIsLoading(true);
@@ -84,6 +81,7 @@ function App() {
       .then((data) => {
           localStorage.setItem("jwt", data.token);
           setLoggedIn(true);
+          localStorage.setItem('loggedIn', true);
           navigate("/movies");
       })
       .catch((e) => {
@@ -103,6 +101,7 @@ function App() {
     mainApi.changeProfileInformation(userInfo)
       .then((res) => {
         setCurrentUser(res);
+        setOnUpdateUserErr("Данные профиля успешно изменены.");
       })
       .catch((e) => {
         console.log(e); 
@@ -111,11 +110,12 @@ function App() {
         } else {
           setOnUpdateUserErr("При обновлении произошла ошибка.");
         }
-      });
-  }
+      })
+  };
 
   function onSignOut() {
     localStorage.removeItem("jwt");
+    localStorage.removeItem("allMovies");
     localStorage.removeItem('moviesReceived');
     localStorage.removeItem('moviesInputSearch');
     localStorage.removeItem('movies');
@@ -123,7 +123,9 @@ function App() {
     localStorage.removeItem('savedMovies');
     localStorage.removeItem('savedMoviesFilter');
     localStorage.removeItem('savedMoviesInputSearch');
+    localStorage.removeItem('loggedIn');
     setLoggedIn(false);
+    localStorage.setItem('loggedIn', false);
     setCurrentUser({
       name: "",
       email: "",
@@ -140,23 +142,19 @@ function App() {
           ) : (
           <Routes>
             <Route 
-              exac path="/" 
+              path="/" 
               element={<Main loggedIn={loggedIn} />} 
             />
             <Route path="/movies" element = {
               <ProtectedRoute 
               component={Movies}
               loggedIn={loggedIn}
-              isLoading={isLoading}
-              setIsLoading={setIsLoading} 
               />
             } />
             <Route path="/saved-movies" element = {
               <ProtectedRoute 
               component={SavedMovies} 
               loggedIn={loggedIn}
-              isLoading={isLoading}
-              setIsLoading={setIsLoading}
               />
             } />
             <Route path="/profile" element = {
@@ -168,16 +166,26 @@ function App() {
               onUpdateUserErr={onUpdateUserErr}
               />
             } />
+            <Route path="/signup" element={
+              <ProtectedRouteSign 
+              component={Register}
+              loggedIn={loggedIn}
+              isLoading={isLoading} 
+              onRegister={onRegister} 
+              onRegisterErr={onRegisterErr}
+              />
+            } />
+            <Route path="/signin" element={
+              <ProtectedRouteSign 
+              component={Login}
+              loggedIn={loggedIn}
+              isLoading={isLoading} 
+              onLogin={onLogin} 
+              onLoginErr={onLoginErr}
+              />
+            } />
             <Route 
-              path="/signup" 
-              element={<Register isLoading={isLoading} onRegister={onRegister} onRegisterErr={onRegisterErr} />} 
-            />
-            <Route 
-              path="/signin" 
-              element={<Login isLoading={isLoading} onLogin={onLogin} onLoginErr={onLoginErr} />} 
-            />
-            <Route 
-              path="*" 
+              path="/*" 
               element={<PageNotFound />} 
             />
           </Routes>

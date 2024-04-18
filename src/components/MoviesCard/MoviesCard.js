@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useLocation } from 'react-router-dom';
 import "./MoviesCard.css";
 
-export default function MoviesCard({ movieRecieved, saveMovieToggle, moviesSaved }) {
+export default function MoviesCard({ movieRecieved, saveMovie, deleteMovie, moviesSaved }) {
 
     const { pathname } = useLocation();
     const [ saved, setSaved ] = useState(false);
@@ -12,32 +12,31 @@ export default function MoviesCard({ movieRecieved, saveMovieToggle, moviesSaved
     }
 
     function handleSave() {
-        const newSaved = !saved;
-        const savedMovie = moviesSaved.filter((obj) => {
-          return obj.movieId === movieRecieved.id;
-        });
-        saveMovieToggle({ 
-            ...movieRecieved, _id: savedMovie.length > 0 ? savedMovie[0]._id : [] 
-        }, newSaved);
+        if (!saved) {
+            saveMovie(movieRecieved);
+            setSaved(true);
+        } else {
+            const savedMovie = moviesSaved.find(savedMovie => savedMovie.movieId === movieRecieved.id);
+            deleteMovie(savedMovie._id);
+            setSaved(false);
+        }
     }
     
     function handleUnsave() {
-        saveMovieToggle(movieRecieved, false);
+        deleteMovie(movieRecieved);
     }
 
     React.useEffect(() => {
         if (pathname !== '/saved-movies') {
-          const savedMovie = moviesSaved.filter((obj) => {
-            return obj.movieId === movieRecieved.id;
-          });
+            const savedMovie = moviesSaved.some(savedMovie => savedMovie.movieId === movieRecieved.id);
     
-          if (savedMovie.length > 0) {
+          if (savedMovie) {
             setSaved(true);
           } else {
             setSaved(false);
           }
         }
-      }, [pathname, moviesSaved, movieRecieved.id, movieRecieved]);
+      }, [pathname, moviesSaved, movieRecieved]);
 
     return (
         <section className="moviesCard">

@@ -8,7 +8,7 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Preloader from "../Preloader/Preloader";
 import "./Movies.css";
 
-export default function Movies({ loggedIn, isLoading, setIsLoading }) {
+export default function Movies({ loggedIn }) {
 
     const [movies, setMovies] = React.useState([]);
     const [moviesNumber, setMoviesNumber] = React.useState([]);
@@ -19,6 +19,7 @@ export default function Movies({ loggedIn, isLoading, setIsLoading }) {
     const [moviesReceivedWithFilter, setMoviesReceivedWithFilter] = React.useState([]);
     const [moviesSaved, setMoviesSaved] = React.useState([]);
     const [onSearchErr, setOnSearchErr] = React.useState("");
+    const [preloader, setPreloader] = React.useState(false);
 
     React.useEffect(() => {
         setMoviesNumber(getMoviesNumber());
@@ -33,8 +34,8 @@ export default function Movies({ loggedIn, isLoading, setIsLoading }) {
         const MoviesCountConfig = {
             '1280': [12, 3],
             '700': [8, 2],
-            '600': [5, 1],
-            '300': [5, 1]
+            '600': [5, 2],
+            '300': [5, 2]
         };
         Object.keys(MoviesCountConfig).sort((a, b) => a - b).forEach((key) => {
             if (width > +key) {
@@ -51,33 +52,49 @@ export default function Movies({ loggedIn, isLoading, setIsLoading }) {
         setMovies(spliceFilms);
     };
 
-    function getMovies(inputSearch) {
-        setMoviesFilter(false);
-        localStorage.setItem('moviesFilter', false);
+    function searchMovies(inputSearch) {
+        setPreloader(false);
         if (!inputSearch) {
             setOnSearchErr('Нужно ввести ключевое слово');
             return false;
         }
-        setIsLoading(true);
+        const allMovies = JSON.parse(localStorage.getItem('allMovies'));
+        const filterState = localStorage.getItem('moviesFilter');
         setOnSearchErr('');
-        moviesApi.getMovies()
-            .then((res) => {
-                let filterRes = res.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
-                localStorage.setItem('movies', JSON.stringify(filterRes));
-                localStorage.setItem('moviesInputSearch', inputSearch);
-                const spliceData = filterRes.splice(0, moviesNumber[0]);
-                setMoviesReceived(spliceData);
-                setMovies(filterRes);
-                setMoviesReceivedWithFilter(spliceData);
-                setMoviesWithFilter(filterRes);
-            })
-            .catch ((e) => {
-                console.log(e);
-                setOnSearchErr('Во время запроса произошла ошибка.');
-            })
-            .finally(() => {
-                setIsLoading(false);
-            })
+        if (filterState) {
+            let filterData = moviesReceived.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
+            setMoviesReceived(filterData);
+        } else {
+            let filterData = allMovies.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
+            localStorage.setItem('movies', JSON.stringify(filterData));
+            localStorage.setItem('moviesInputSearch', inputSearch);
+            const spliceData = filterData.splice(0, moviesNumber[0]);
+            setMoviesReceived(spliceData);
+            setMovies(filterData);
+            setMoviesReceivedWithFilter(spliceData);
+            setMoviesWithFilter(filterData);
+        }
+    }
+
+    function getMovies(inputSearch) {
+        setPreloader(true);
+        const baseMovies = JSON.parse(localStorage.getItem('allMovies'));
+        if (!baseMovies) {
+            moviesApi.getMovies()
+                .then((res) => {
+                    localStorage.setItem('allMovies', JSON.stringify(res));
+                    searchMovies(inputSearch);
+                })
+                .catch ((e) => {
+                    console.log(e);
+                    setOnSearchErr('Во время запроса произошла ошибка.');
+                })
+                .finally(() => {
+                    setPreloader(false);
+                })
+        } else {
+            searchMovies(inputSearch);
+        }
     };
 
     async function getMoviesFilter(filter) {
@@ -95,12 +112,11 @@ export default function Movies({ loggedIn, isLoading, setIsLoading }) {
         }
         localStorage.setItem('movies', JSON.stringify(filterMoviesReceived.concat(filterMovies)));
         localStorage.setItem('moviesFilter', filter);
-        setMoviesReceived(filterMoviesReceived.concat(filterMovies));
+        setMoviesReceived(filterMoviesReceived);
         setMovies(filterMovies);
     }
 
-    function saveMovieToggle(movie, save) {
-        if (save) {
+    function saveMovie(movie) {
           const movieObject = {
             image: 'https://api.nomoreparties.co' + movie.image.url,
             trailerLink: movie.trailerLink,
@@ -121,18 +137,19 @@ export default function Movies({ loggedIn, isLoading, setIsLoading }) {
                 .catch((e) => {
                     console.log(e);
                 });
-        }   else {
-                mainApi.deleteMovie(movie._id)
-                    .then(() => {
-                        mainApi.getMovies((res) => {
-                            console.log(res);
-                            setMoviesSaved(res);
-                        })
-                    })
-                    .catch ((e) => {
-                        console.log(e);
-                    });
-        }
+    }
+
+    function deleteMovie(id) {
+        mainApi.deleteMovie(id)
+            .then(() => {
+                mainApi.getMovies((res) => {
+                    console.log(res);
+                    setMoviesSaved(res);
+                })
+            })
+            .catch ((e) => {
+                console.log(e);
+            });
     }
 
     React.useEffect(() => {
@@ -169,10 +186,10 @@ export default function Movies({ loggedIn, isLoading, setIsLoading }) {
             <main className="movies">
                 <SearchForm  moviesInputSearch={moviesInputSearch} getMovies={getMovies} moviesFilter={moviesFilter} getMoviesFilter={getMoviesFilter}/>
                 <span className="movies__error">{onSearchErr}</span>
-                {isLoading ? (
+                {preloader ? (
                     <Preloader />
                 ) : (
-                    <MoviesCardList movies={movies}  moviesReceived={moviesReceived} handleButtonMore={handleButtonMore} saveMovieToggle={saveMovieToggle} moviesSaved={moviesSaved} />
+                    <MoviesCardList movies={movies}  moviesReceived={moviesReceived} handleButtonMore={handleButtonMore} saveMovie={saveMovie} deleteMovie={deleteMovie} moviesSaved={moviesSaved} />
                 )
             }
             </main>

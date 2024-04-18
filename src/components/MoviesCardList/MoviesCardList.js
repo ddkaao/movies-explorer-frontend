@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import MoviesCard from "../MoviesCard/MoviesCard";
 import "./MoviesCardList.css";
 
-export default function MoviesCardList({ movies, moviesReceived, handleButtonMore, saveMovieToggle, moviesSaved }) {
+export default function MoviesCardList({ movies, moviesReceived, handleButtonMore, saveMovie, deleteMovie, moviesSaved }) {
 
     const { pathname } = useLocation();
 
@@ -12,7 +12,7 @@ export default function MoviesCardList({ movies, moviesReceived, handleButtonMor
             {moviesReceived.length > 0 ? (
                 <div className="moviesCardList__list">
                     {moviesReceived.map((movieRecieved) => (
-                        <MoviesCard key={movieRecieved.id || movieRecieved.movieId} movieRecieved={movieRecieved} saveMovieToggle={saveMovieToggle} moviesSaved={moviesSaved} />
+                        <MoviesCard key={movieRecieved.id || movieRecieved.movieId} movieRecieved={movieRecieved} saveMovie={saveMovie} deleteMovie={deleteMovie} moviesSaved={moviesSaved} />
                     ))}
                 </div>
             ) : (

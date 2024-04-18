@@ -51,7 +51,9 @@ export default function Login({ isLoading, onLogin, onLoginErr }) {
         <section className="login">
             <div className="login__container">
                 <form className="login__form" ref={formR} onSubmit={handleSubmit} noValidate>
-                    <img src={logo} alt="Логотип" className="login__logo" />
+                    <Link to="/">
+                        <img src={logo} alt="Логотип" className="login__logo" />
+                    </Link>
                     <h2 className="login__title">Рады видеть!</h2>
                     <fieldset className="login__inputs">
                         <div className="login__field">

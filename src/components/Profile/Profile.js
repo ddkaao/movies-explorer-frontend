@@ -10,6 +10,7 @@ export default function Profile({ loggedIn, handleUpdateUser, onSignOut, onUpdat
     const [nameErr, setNameErr] = React.useState('');
     const [emailErr, setEmailErr] = React.useState('');
     const [isDisabled, setIsDisabled] = React.useState(true);
+    const [isAcceptable, setIsAcceptable] = React.useState(true);
     const formR = React.useRef();
     const currentUser = React.useContext(CurrentUserContext);
 
@@ -25,9 +26,9 @@ export default function Profile({ loggedIn, handleUpdateUser, onSignOut, onUpdat
     function validate() {
         const form = formR.current;
         if (form.checkValidity()) {
-          setIsDisabled(false);
+            setIsAcceptable(true);
         } else {
-          setIsDisabled(true);
+            setIsAcceptable(false);
         }
     }
 
@@ -50,6 +51,14 @@ export default function Profile({ loggedIn, handleUpdateUser, onSignOut, onUpdat
         }
         validate();
     }
+
+    React.useEffect(() => {
+        if ((name !== currentUser.name || email !== currentUser.email) && isAcceptable) {
+          setIsDisabled(false);
+        } else {
+          setIsDisabled(true);
+        }
+      }, [name, email, currentUser.name, currentUser.email, isAcceptable])
 
     React.useEffect(() => {
         setName(currentUser.name);

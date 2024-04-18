@@ -108,6 +108,7 @@
     border: 0;
     cursor: pointer;
     background-color: transparent;
+    transition: transform .2s;
 }
 
 .profile__btn-edit-disabled {
@@ -115,7 +116,13 @@
 }
 
 .profile__btn-edit:hover {
-    opacity: .8;
+    transform: scale(1.2);
+}
+
+.profile__btn-edit-disabled:hover {
+    cursor: default;
+    text-decoration: none;
+    transform: scale(1);
 }
 
 .profile__btn-exit {
@@ -128,10 +135,11 @@
     border: 0;
     cursor: pointer;
     background-color: transparent;
+    transition: transform .2s;
 }
 
 .profile__btn-exit:hover {
-    opacity: .8;
+    transform: scale(1.2);
 }
 
 @media screen and (max-width: 1100px) {
