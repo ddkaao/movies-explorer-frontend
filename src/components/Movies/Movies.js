@@ -6,84 +6,92 @@ import Footer from "../Footer/Footer";
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Preloader from "../Preloader/Preloader";
+import { useLocation } from 'react-router-dom';
 import "./Movies.css";
 
-export default function Movies({ loggedIn }) {
+export default function Movies({ loggedIn, moviesSaved, setMoviesSaved }) {
 
     const [movies, setMovies] = React.useState([]);
-    const [moviesNumber, setMoviesNumber] = React.useState([]);
+    const [moviesNumber, setMoviesNumber] = React.useState('');
     const [moviesReceived, setMoviesReceived] = React.useState([]);
+    const splice = moviesReceived.slice(0, moviesNumber);
     const [moviesInputSearch, setmoviesInputSearch] = React.useState("");
     const [moviesFilter, setMoviesFilter] = React.useState(false);
-    const [moviesWithFilter, setMoviesWithFilter] = React.useState([]);
-    const [moviesReceivedWithFilter, setMoviesReceivedWithFilter] = React.useState([]);
-    const [moviesSaved, setMoviesSaved] = React.useState([]);
     const [onSearchErr, setOnSearchErr] = React.useState("");
     const [preloader, setPreloader] = React.useState(false);
+    const [searched, setSearched] = React.useState(true);
+    const { pathname } = useLocation();
+    
+    const getMoviesNumber = () => {
+        const cards = { 
+            start: 12, 
+            step: 3
+        }
+        if (window.innerWidth < 1280) {
+            cards.start = 8
+            cards.step = 2
+        }
+        if ((window.innerWidth < 700) || (window.innerWidth < 600)) {
+            cards.start = 5
+            cards.step = 2
+        }
+        return cards;
+    };
 
     React.useEffect(() => {
-        setMoviesNumber(getMoviesNumber());
-        const handlerResize = () => setMoviesNumber(getMoviesNumber());
-        window.addEventListener('resize', handlerResize);
-        return () => { window.removeEventListener('resize', handlerResize) };
-    }, []);
-    
-    function getMoviesNumber() {
-        let cards;
-        const width = document.documentElement.clientWidth;
-        const MoviesCountConfig = {
-            '1280': [12, 3],
-            '700': [8, 2],
-            '600': [5, 2],
-            '300': [5, 2]
-        };
-        Object.keys(MoviesCountConfig).sort((a, b) => a - b).forEach((key) => {
-            if (width > +key) {
-                cards = MoviesCountConfig[key];
+        if (pathname === '/movies') {
+            setMoviesNumber(getMoviesNumber().start);
+            const showInitialNumber = () => {
+                if (window.innerWidth >= 3) {
+                    setMoviesNumber(getMoviesNumber().start);
+                } else if (window.innerWidth < 3 && window.innerWidth >= 2) {
+                    setMoviesNumber(getMoviesNumber().start);
+                } else if (window.innerWidth < 2) {
+                    setMoviesNumber(getMoviesNumber().start);
+                }
             }
-        });
-    return cards;
-    };
+            window.addEventListener('resize', showInitialNumber);
+            return () => window.removeEventListener('resize', showInitialNumber);
+          }
+    }, [pathname, moviesReceived]);
     
     function handleButtonMore() {
-        const spliceFilms = movies;
-        const newFilms = moviesReceived.concat(spliceFilms.splice(0, moviesNumber[1]));
-        setMoviesReceived(newFilms);
-        setMovies(spliceFilms);
+        setMoviesNumber(moviesNumber + getMoviesNumber().step);
     };
 
-    function searchMovies(inputSearch) {
-        setPreloader(false);
+    const searchMovies = React.useCallback((inputSearch, moviesFilter, movies) => {
+        setmoviesInputSearch(inputSearch);
+        localStorage.setItem('moviesInputSearch', JSON.stringify(inputSearch));
+        localStorage.setItem('allMovies', JSON.stringify(movies));
+        localStorage.setItem('moviesFilter', JSON.stringify(moviesFilter));
+        setMoviesReceived(movies.filter((movie) => {
+            const filterData = movie.nameRU.toLowerCase().includes(inputSearch.toLowerCase())
+            if (moviesFilter) {
+                if (filterData && movie.duration <= 40) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return filterData;
+            }
+        }))
+        setSearched(false);
+    }, []);
+
+    function getMovies(inputSearch) {
         if (!inputSearch) {
             setOnSearchErr('Нужно ввести ключевое слово');
             return false;
         }
-        const allMovies = JSON.parse(localStorage.getItem('allMovies'));
-        const filterState = localStorage.getItem('moviesFilter');
-        setOnSearchErr('');
-        if (filterState) {
-            let filterData = moviesReceived.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
-            setMoviesReceived(filterData);
-        } else {
-            let filterData = allMovies.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
-            localStorage.setItem('movies', JSON.stringify(filterData));
-            localStorage.setItem('moviesInputSearch', inputSearch);
-            const spliceData = filterData.splice(0, moviesNumber[0]);
-            setMoviesReceived(spliceData);
-            setMovies(filterData);
-            setMoviesReceivedWithFilter(spliceData);
-            setMoviesWithFilter(filterData);
-        }
-    }
-
-    function getMovies(inputSearch) {
-        setPreloader(true);
-        const baseMovies = JSON.parse(localStorage.getItem('allMovies'));
-        if (!baseMovies) {
+        setOnSearchErr("");
+        if (movies.length === 0) {
+            setPreloader(true);
             moviesApi.getMovies()
                 .then((res) => {
-                    localStorage.setItem('allMovies', JSON.stringify(res));
-                    searchMovies(inputSearch);
+                    setMovies(res);
+                    setMoviesFilter(false);
+                    searchMovies(inputSearch, moviesFilter, res);
                 })
                 .catch ((e) => {
                     console.log(e);
@@ -93,43 +101,27 @@ export default function Movies({ loggedIn }) {
                     setPreloader(false);
                 })
         } else {
-            searchMovies(inputSearch);
+            searchMovies(inputSearch, moviesFilter, movies);
         }
     };
 
-    async function getMoviesFilter(filter) {
-        let filterMoviesReceived = [];
-        let filterMovies = [];
-    
-        if (filter) {
-          setMoviesReceivedWithFilter(moviesReceived);
-          setMoviesWithFilter(movies);
-          filterMoviesReceived = moviesReceived.filter(({ duration }) => duration <= 40);
-          filterMovies = movies.filter(({ duration }) => duration <= 40);
-        } else {
-          filterMoviesReceived = moviesReceivedWithFilter;
-          filterMovies = moviesWithFilter;
-        }
-        localStorage.setItem('movies', JSON.stringify(filterMoviesReceived.concat(filterMovies)));
-        localStorage.setItem('moviesFilter', filter);
-        setMoviesReceived(filterMoviesReceived);
-        setMovies(filterMovies);
-    }
-
     function saveMovie(movie) {
-          const movieObject = {
-            image: 'https://api.nomoreparties.co' + movie.image.url,
-            trailerLink: movie.trailerLink,
-            thumbnail: 'https://api.nomoreparties.co' + movie.image.url,
-            movieId: movie.id,
-            country: movie.country || 'Неизвестно',
-            director: movie.director,
-            duration: movie.duration,
-            year: movie.year,
-            description: movie.description,
-            nameRU: movie.nameRU,
-            nameEN: movie.nameEN,
-          };
+        const movieObject = {
+        image: 'https://api.nomoreparties.co' + movie.image.url,
+        trailerLink: movie.trailerLink,
+        thumbnail: 'https://api.nomoreparties.co' + movie.image.url,
+        movieId: movie.id,
+        country: movie.country || 'Неизвестно',
+        director: movie.director,
+        duration: movie.duration,
+        year: movie.year,
+        description: movie.description,
+        nameRU: movie.nameRU,
+        nameEN: movie.nameEN,
+        };
+        const saved = moviesSaved.some(film => movie.id === film.movieId);
+        const found = moviesSaved.find(savedMovie => movie.id === savedMovie.movieId);
+        if (!saved){
             mainApi.saveMovie(movieObject)
                 .then((res) => {
                     setMoviesSaved([res, ...moviesSaved]);
@@ -137,59 +129,57 @@ export default function Movies({ loggedIn }) {
                 .catch((e) => {
                     console.log(e);
                 });
-    }
-
-    function deleteMovie(id) {
-        mainApi.deleteMovie(id)
+        } else {
+            mainApi.deleteMovie(found._id)
             .then(() => {
-                mainApi.getMovies((res) => {
-                    console.log(res);
-                    setMoviesSaved(res);
-                })
+                setMoviesSaved(moviesSaved.filter((film) => {
+                    return film._id !== found._id
+                }))
             })
             .catch ((e) => {
                 console.log(e);
             });
-    }
+        }
+    };
 
     React.useEffect(() => {
-        mainApi.getMovies()
-          .then((res) => {
-            setMoviesSaved(res);
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-    
-        const localStorageFilms = localStorage.getItem('movies');
-        const localStorageInput = localStorage.getItem('moviesInputSearch');
-        const localStorageFilter = localStorage.getItem('moviesFilter');
-
-        if (localStorageFilter) {
-            setMoviesFilter(localStorageFilter === 'true');
-        }
-
-        if (localStorageInput) {
+        if (localStorage.moviesFilter && localStorage.moviesInputSearch && localStorage.allMovies) {
+            const localStorageMovies = JSON.parse(localStorage.allMovies);
+            const localStorageInput = JSON.parse(localStorage.moviesInputSearch);
+            const localStorageFilter = JSON.parse(localStorage.moviesFilter);
             setmoviesInputSearch(localStorageInput);
-          }
-    
-        if (localStorageFilms) {
-          const filterData = JSON.parse(localStorageFilms);
-          setMoviesReceived(filterData.splice(0, getMoviesNumber()[0]));
-          setMovies(filterData);
+            setMoviesFilter(localStorageFilter);
+            setMovies(localStorageMovies);
+            searchMovies(localStorageInput, localStorageFilter, localStorageMovies);
         }
-    }, [loggedIn]);
+    }, [searchMovies]);
 
     return (
         <>
             <Header loggedIn={loggedIn} />
             <main className="movies">
-                <SearchForm  moviesInputSearch={moviesInputSearch} getMovies={getMovies} moviesFilter={moviesFilter} getMoviesFilter={getMoviesFilter}/>
+                <SearchForm  
+                    moviesInputSearch={moviesInputSearch} 
+                    getMovies={getMovies} 
+                    searchMovies={searchMovies}
+                    moviesFilter={moviesFilter}
+                    setMoviesFilter={setMoviesFilter}
+                    movies={movies}
+                    moviesSaved={moviesSaved}
+                />
                 <span className="movies__error">{onSearchErr}</span>
                 {preloader ? (
                     <Preloader />
                 ) : (
-                    <MoviesCardList movies={movies}  moviesReceived={moviesReceived} handleButtonMore={handleButtonMore} saveMovie={saveMovie} deleteMovie={deleteMovie} moviesSaved={moviesSaved} />
+                    <MoviesCardList 
+                        moviesReceived={moviesReceived} 
+                        handleButtonMore={handleButtonMore} 
+                        saveMovie={saveMovie} 
+                        moviesSaved={moviesSaved}  
+                        searched={searched}
+                        splice={splice}
+                        moviesNumber={moviesNumber}
+                    />
                 )
             }
             </main>

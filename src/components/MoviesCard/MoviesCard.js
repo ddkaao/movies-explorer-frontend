@@ -12,13 +12,13 @@ export default function MoviesCard({ movieRecieved, saveMovie, deleteMovie, movi
     }
 
     function handleSave() {
-        if (!saved) {
-            saveMovie(movieRecieved);
+        const found = moviesSaved.some(savedMovie => movieRecieved.id === savedMovie.movieId);
+        if (found) {
             setSaved(true);
+            saveMovie(movieRecieved);
         } else {
-            const savedMovie = moviesSaved.find(savedMovie => savedMovie.movieId === movieRecieved.id);
-            deleteMovie(savedMovie._id);
             setSaved(false);
+            saveMovie(movieRecieved);
         }
     }
     
@@ -29,14 +29,14 @@ export default function MoviesCard({ movieRecieved, saveMovie, deleteMovie, movi
     React.useEffect(() => {
         if (pathname !== '/saved-movies') {
             const savedMovie = moviesSaved.some(savedMovie => savedMovie.movieId === movieRecieved.id);
-    
+
           if (savedMovie) {
             setSaved(true);
           } else {
             setSaved(false);
           }
         }
-      }, [pathname, moviesSaved, movieRecieved]);
+      }, [pathname, setSaved, moviesSaved, movieRecieved.id]);
 
     return (
         <section className="moviesCard">
@@ -51,11 +51,13 @@ export default function MoviesCard({ movieRecieved, saveMovie, deleteMovie, movi
                     <p className="moviesCard__duration">{getDuration(movieRecieved.duration)}</p>
                 </div>
             </div>
-            {pathname === '/saved-movies' ? (
-                <button type="button" className="moviesCard__btn moviesCard__btn-delete" onClick={handleUnsave}></button>
-            ) : (
-                <button type="button" className={`moviesCard__btn ${saved ? "moviesCard__btn-saved" : "moviesCard__btn-save"}`} onClick={handleSave}></button>
-            )}
+            <div className="moviesCard__buttons">
+                {pathname === '/saved-movies' ? (
+                    <button type="button" className="moviesCard__btn moviesCard__btn-delete" onClick={handleUnsave}></button>
+                ) : (
+                    <button type="button" className={`moviesCard__btn ${saved ? "moviesCard__btn-saved" : "moviesCard__btn-save"}`} onClick={handleSave}></button>
+                )}
+            </div>
         </section>
     )
 }

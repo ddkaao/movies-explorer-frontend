@@ -20,6 +20,7 @@ function App() {
     name: "",
     email: "",
   });
+  const [moviesSaved, setMoviesSaved] = React.useState([]);
   const [loggedIn, setLoggedIn] = React.useState(JSON.parse(localStorage.getItem('loggedIn')));
   const [isLoading, setIsLoading] = React.useState(false);
   const [onRegisterErr, setOnRegisterErr] = React.useState('');
@@ -38,7 +39,19 @@ function App() {
         });
         setOnUpdateUserErr("");
     }
-}, [loggedIn]);
+  }, [loggedIn]);
+
+  React.useEffect(() => {
+    if (loggedIn) {
+      mainApi.getMovies()
+        .then((res) => {
+          setMoviesSaved(res);
+        })
+        .catch((err) => {
+          console.log(err); 
+        });
+    }
+  }, [loggedIn]);
 
   React.useEffect(() => {
     const jwt = localStorage.getItem('jwt');
@@ -149,12 +162,16 @@ function App() {
               <ProtectedRoute 
               component={Movies}
               loggedIn={loggedIn}
+              moviesSaved={moviesSaved}
+              setMoviesSaved={setMoviesSaved}
               />
             } />
             <Route path="/saved-movies" element = {
               <ProtectedRoute 
               component={SavedMovies} 
               loggedIn={loggedIn}
+              moviesSaved={moviesSaved}
+              setMoviesSaved={setMoviesSaved}
               />
             } />
             <Route path="/profile" element = {

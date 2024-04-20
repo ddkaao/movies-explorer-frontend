@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import mainApi from "../../utils/MainApi";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
@@ -6,95 +6,73 @@ import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import "./SavedMovies.css";
 
-export default function SavedMovies({ loggedIn }) {
+export default function SavedMovies({ loggedIn, moviesSaved, setMoviesSaved }) {
 
-    const [movies, setMovies] = React.useState([]);
-    const [moviesReceived, setMoviesReceived] = React.useState([]);
-    const [moviesInputSearch, setMoviesInputSearch] = React.useState("");
+    const splice = 12;
+    const [moviesReceived, setMoviesReceived] = React.useState(moviesSaved);
+    const [moviesInputSearch, setmoviesInputSearch] = React.useState("");
     const [moviesFilter, setMoviesFilter] = React.useState(false);
     const [onSearchErr, setOnSearchErr] = React.useState("");
+    const [searched, setSearched] = React.useState(true);
 
-    async function getMovies(inputSearch, filter) {
-        if (!inputSearch) {
-            setOnSearchErr('Нужно ввести ключевое слово');
-            return false;
-        }
-        setMoviesInputSearch(inputSearch);
-        setOnSearchErr('');
-        try {
-          const filterState = localStorage.getItem('savedMoviesFilter');
-          const data = movies;
-          if (filterState) {
-            let filterData = moviesReceived.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
-            setMoviesReceived(filterData);
-          } else {
-            let filterData = data.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
-            setMoviesReceived(filterData);
-            if (inputSearch) {
-              localStorage.setItem('savedMovies', JSON.stringify(filterData));
-              localStorage.setItem('savedMoviesFilter', filter);
-            } 
-          }
-        } catch (err) {
-            setOnSearchErr('Во время запроса произошла ошибка.');
-            setMovies([]);
-        }
-    }
-
-    async function getMoviesFilter(filter) {
-        let filterMovies = [];   
-        if (filter) {
-            const data = moviesReceived;
-            filterMovies = data.filter(({ duration }) => duration <= 40);
+    const searchMovies = useCallback((inputSearch, moviesFilter, movies) => {
+      setmoviesInputSearch(inputSearch);
+      setMoviesReceived(movies.filter((movie) => {
+          const filterData = movie.nameRU.toLowerCase().includes(inputSearch.toLowerCase());
+          if (moviesFilter) {
+            if (filterData && movie.duration <= 40) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
-          filterMovies = movies;
+            return filterData;
         }
-        localStorage.setItem('savedMoviesFilter', filter);
-        setMoviesReceived(filterMovies);
+      }));
+  }, []);
+
+  function getMovies(inputSearch) {
+    if (!inputSearch) {
+        setOnSearchErr('Нужно ввести ключевое слово');
+        return false;
     }
+    setOnSearchErr("");
+    setSearched(false);
+    searchMovies(inputSearch, moviesFilter, moviesSaved);
+  };
 
     function deleteMovie(movie) {
       mainApi.deleteMovie(movie._id)
           .then(() => {
-              mainApi.getMovies()
-                  .then((res) => {
-                      setMoviesReceived(res);
-                      setMovies(res);
-                  })
+              setMoviesSaved(moviesSaved.filter((film) => {
+                return film._id !== movie._id
+              }))
           })
           .catch ((e) => {
               console.log(e);
           });
-    }
+    };
 
     React.useEffect(() => {
-      const localStorageFilms = localStorage.getItem('savedMovies');
-      if (localStorageFilms) {
-        setMovies(JSON.parse(localStorageFilms));
-        const localStorageFilmsTumbler = localStorage.getItem('savedMoviesFilter');
-  
-        if (localStorageFilmsTumbler) {
-          setMoviesFilter(localStorageFilmsTumbler === 'true');
-        }
-      } else {
-          mainApi.getMovies()
-            .then((res) => {
-              setMovies(res);
-              setMoviesReceived(res);
-            })
-            .catch ((e) => {
-              console.log(e);
-            })
-      }
-    }, [loggedIn]);
+      searchMovies(moviesInputSearch, moviesFilter, moviesSaved);
+    }, [searchMovies, moviesSaved, moviesFilter, moviesInputSearch]);
 
     return (
         <>
             <Header loggedIn={loggedIn} />
             <main className="savedMovies">
-                <SearchForm getMovies={getMovies} getMoviesFilter={getMoviesFilter} moviesInputSearch={moviesInputSearch} moviesFilter={moviesFilter} />
+                <SearchForm 
+                  getMovies={getMovies} 
+                  searchMovies={searchMovies} 
+                  movies={moviesSaved}
+                  moviesInputSearch={moviesInputSearch} 
+                  moviesFilter={moviesFilter}
+                  moviesSaved={moviesSaved}
+                  setMoviesFilter={setMoviesFilter}
+                  searched={searched} 
+                />
                 <span className="movies__error">{onSearchErr}</span>
-                <MoviesCardList moviesReceived={moviesReceived} deleteMovie={deleteMovie} movies={[]} />
+                <MoviesCardList moviesReceived={moviesReceived} deleteMovie={deleteMovie} searched={searched} splice={splice} />
             </main>
             <Footer />
         </>

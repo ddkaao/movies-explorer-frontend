@@ -76,7 +76,6 @@
 }
 
 .moviesCard__btn-delete {
-    visibility: hidden;
     width: 21px;
     height: 21px;
     background-image: url("../../images/trash.svg");
@@ -85,7 +84,7 @@
     opacity: 0;
 }
 
-.moviesCard__container:hover + .moviesCard__btn-delete {
+.moviesCard:hover .moviesCard__btn-delete {
     visibility: visible;
     opacity: 1;
 }
@@ -126,5 +125,9 @@
 
     .moviesCard__caption {
         padding-top: 16px;
+    }
+
+    .moviesCard__btn-delete {
+        opacity: 1;
     }
 }
