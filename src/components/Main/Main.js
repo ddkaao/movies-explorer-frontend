@@ -8,10 +8,10 @@ import AboutMe from "../AboutMe/AboutMe";
 import Portfolio from "../Portfolio/Portfolio";
 import "./Main.css";
 
-export default function Main({ isLogged }) {
+export default function Main({ loggedIn }) {
     return (
         <>
-            <Header loggedIn={isLogged} />
+            <Header loggedIn={loggedIn} />
             <main className="main">
                 <Promo />
                 <AboutProject />
